@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #f0f0f0;
+      font-family: sans-serif;
+    }
+
+    /* шапка */
+    #header {
+      background: #2c3e50;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    #header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    #header span {
+      font-size: 13px;
+      color: #aab7c4;
+    }
+
+    /* основной контент */
+    #content {
+      display: flex;
+      flex: 1;
+      padding: 20px;
+      gap: 20px;
+      overflow: hidden;
+    }
+
+    #legend {
+      width: 250px;
+      min-width: 250px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #legend h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    #map-container {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <div id="header">
+    <h1>Студенческий маршрут</h1>
+  </div>
+
+  <!-- Основной контент -->
+  <div id="content">
+
+    <div id="legend">
+      <h2>Легенда карты</h2>
+      <div class="legend-item">
+        <img src="icons/shops.png" width="20" height="20"">
+        Магазины
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Аптеки
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Интересные места
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Кафе
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Самое выгодное
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        24/7
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Корпуса
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#27ae60"></div>
+        Общежития
+      </div>
+    </div>
+
+    <div id="map-container">
+      <div id="map"></div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Координаты города (Томск)
+    const map = L.map('map', { attributionControl: false }).setView([56.452617, 84.974809], 15);
+
+	// Удаление украинского флага
+	L.control.attribution({
+		prefix: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Координаты общежитий и корпусов (метки)
+    // Сайт - openstreetmap.org
+    const places = [
+      { coords: [56.452617, 84.974809], name: 'Общежитие 6' },
+      { coords: [56.451563, 84.97435],  name: 'Общежитие 5' },
+      { coords: [56.474142, 84.949867], name: 'Главный корпус ТУСУР' },
+    ];
+
+    places.forEach(place => {
+      L.marker(place.coords).addTo(map).bindPopup(place.name);
+    });
+
+    // Наложение собственной карты позже (файл с картинкой нужно положить рядом с html файлом)
+    // const imageBounds = [[56.8510, 60.6110], [56.8530, 60.6135]]; // Углы изображения
+    // L.imageOverlay('campus.png', imageBounds).addTo(map);
+  </script>
+
+</body>
+</html>
